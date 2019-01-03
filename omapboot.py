@@ -31,10 +31,15 @@ from OMAP import *
 
 def main():
     AUTOFLAG = False
-    
+    CHANGEBOOT = False
+    if len(sys.argv) < 2:
+        print("usage for load boot loader: usbboot [-a] 2ndstage.bin 3rdstage.bin")
+        print("usage for change boot device: usbboot -b")
+        raise SystemExit(1)
     if sys.argv[1] == "-b":
         print("Boot from SD Card.")
         print("Waiting for omap44 device.")
+        CHANGEBOOT = True
     elif len(sys.argv) in [3,4]:
     #this means "don't block at input() to let the user insert the battery"
     # if you are doing rapid dev cycles, having to press two enters for each upload would get tedious
@@ -87,8 +92,10 @@ def main():
     #print("ASIC_ID:")
     #print(" ".join(hex(e) for e in ASIC_ID))
     #assert ASIC_ID["ID"][0] == 0x44, "This code expects an OMAP44xx device"
-    
-    omap.boot(aboot, uboot, AUTOFLAG)
+    if CHANGEBOOT:
+        omap.bootMMC1()
+    else:
+        omap.boot(aboot, uboot, AUTOFLAG)
     
 if __name__ == '__main__':
     main()

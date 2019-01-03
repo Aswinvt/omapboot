@@ -95,9 +95,21 @@ class OMAP4(BaseOMAP):
         
         # content
         readinto_io(open(fname, "rb"), self._dev)
-    def bootSD(self):
+    def bootMMC1(self):
         self._dev.write(self.GET_ID)
         ASIC = self._dev.read(0xFF)
+        split_ASIC_blocks(ASIC)
+        parse_ASIC_blocks(ASIC)
+        print("recevied ASIC ID banner:")
+        parse_ASIC_blocks(ASIC)
+
+        # upload 2nd stage (x-loader) via the 1st stage
+        self._dev.write(self.BOOT_MMC1)
+        print("Giving x-loader a chance to come up", end="", flush=True)
+        for i in range(3):
+            print(".", end="", flush=True);
+            time.sleep(1)
+        print("Probably loaded!")
         
     def boot(self, x_loader, u_boot, AUTOFLAG=False):
         """
