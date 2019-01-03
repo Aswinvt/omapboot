@@ -95,7 +95,10 @@ class OMAP4(BaseOMAP):
         
         # content
         readinto_io(open(fname, "rb"), self._dev)
-    
+    def bootSD(self):
+        self._dev.write(self.GET_ID)
+        ASIC = self._dev.read(0xFF)
+        
     def boot(self, x_loader, u_boot, AUTOFLAG=False):
         """
         x_loader and u_boot should be filenames so that we can stat them for their filesizes

@@ -18,6 +18,10 @@ Credits:
 import sys
 import time
 
+if("win" in sys.platform):
+    print("We are not support Windows Platform!")
+    raise SystemExit(1)
+
 try:
     from usbbulk import BulkUSB
 except ImportError:
@@ -26,23 +30,28 @@ except ImportError:
 from OMAP import *
 
 def main():
-    if not len(sys.argv) in [3,4]:
+    AUTOFLAG = False
+    
+    if sys.argv[1] == "-b":
+        print("Boot from SD Card.")
+        print("Waiting for omap44 device.")
+    elif len(sys.argv) in [3,4]:
+    #this means "don't block at input() to let the user insert the battery"
+    # if you are doing rapid dev cycles, having to press two enters for each upload would get tedious
+        if sys.argv[1] == "-a":
+            AUTOFLAG = True 
+            del sys.argv[1]
+        aboot, uboot = sys.argv[1:]
+        print("Waiting for omap44 device. Make sure you start with the battery out.")
+    else:
         print("usage: usbboot [-a] 2ndstage.bin 3rdstage.bin")
         raise SystemExit(1)
     
     # quick hack implementation of a command line arg
     # TODO: use the proper command parser, or at least getopt
     # 
-    #this means "don't block at input() to let the user insert the battery"
-    # if you are doing rapid dev cycles, having to press two enters for each upload would get tedious
-    AUTOFLAG = False
-    if sys.argv[1] == "-a":
-        AUTOFLAG = True 
-        del sys.argv[1]
+
     
-    aboot, uboot = sys.argv[1:]
-    
-    print("Waiting for omap44 device. Make sure you start with the battery out.")
     
     # USB IDs:
     #TODO: these need to be a list;
