@@ -37,7 +37,7 @@ def main():
         print("usage for change boot device: usbboot -b")
         raise SystemExit(1)
     if sys.argv[1] == "-b":
-        print("Boot from SD Card.")
+        print("Boot from MMC1 interface selected.")
         print("Waiting for omap44 device.")
         CHANGEBOOT = True
     elif len(sys.argv) in [3,4]:
