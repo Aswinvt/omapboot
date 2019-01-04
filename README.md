@@ -65,6 +65,36 @@ _This requires a rooted Android, of course. In theory having control of the boot
 
 _Depending on the size of your partitions, you may need to do this in multiple steps_. 
 
+The extension of [kousu omapboot](https://github.com/kousu/omapboot) make you able to boot from different interface then hardwire boot option. This is primary done for Samsung Galaxy Tab 2 P5100 to be able boot from SD Card, but may work with other devices. I think the device have to have hardwire boot options to boot from USB that is probably case of Samsung Galaxy Tab 2 P5100.
+
+You can boot your device from MMC1 interface (Samsung Galaxy Tab 2 P5100 SD Card) by doing the following: 
+* Plug in the usb cable with the battery still out. You should see a device attaching and detaching in dmesg(8) or in the Windows Device Manager, it's ther only for 1sec or less.
+* If you want load original u-boot from SD Card you have to have battery in. Press power button for 10sec, after run the program.
+* run the program:
+```
+[kousu@birdlikeplant omapboot]$ omapboot -b
+Boot from MMC1 interface selected.
+Waiting for omap44 device.
+Model: 4430
+ROM revision: 0x04
+CH: enabled
+Underdocumented ASIC subblock #18: 00
+IDEN: 0xE5FD23CE0F5FDF902D7EDA9B4D848D687F62372A
+MPKH: 0xB585ACF1DD15B06A74813BFDDD6ECD64227CE4C90658C65B4C53AC229B4C6DC0
+CRC0: 0x9C669AD9
+CRC0: 0x682ADCCF
+recevied ASIC ID banner:
+Model: 4430
+ROM revision: 0x04
+CH: enabled
+Underdocumented ASIC subblock #18: 00
+IDEN: 0xE5FD23CE0F5FDF902D7EDA9B4D848D687F62372A
+MPKH: 0xB585ACF1DD15B06A74813BFDDD6ECD64227CE4C90658C65B4C53AC229B4C6DC0
+CRC0: 0x9C669AD9
+CRC0: 0x682ADCCF
+Giving x-loader a chance to come up...Probably loaded!
+```
+Contiunue of original README.
 
 Then, you need to find or make some boot images. In general, this is the most frustrating and difficult part, and I cannot help you with it because every phone is slightly different. You also need to ensure that the [images are signed for your device](https://github.com/swetland/omap4boot/issues/8#issuecomment-64971642). Here are some possible sources:
 * If you have taken backups, then two of the images should be the two bootloaders. Fun fun fun!
